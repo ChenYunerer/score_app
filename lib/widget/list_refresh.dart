@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 ///加载更多LoadingWidget
@@ -29,7 +27,7 @@ class ListRefresh<T> extends StatefulWidget {
       this.loadMoreWidgetBuilder,
       this.noMoreDataWidgetBuilder,
       this.loadingMore = false,
-      this.noMoreData = false})
+        this.noMoreData = true})
       : super();
 
   @override
@@ -79,7 +77,7 @@ class _ListRefreshState extends State<ListRefresh> {
 
   Widget _itemBuilder(BuildContext context, int index) {
     if (index == widget.itemData.length - 1 && !widget.noMoreData) {
-      if (!widget.loadingMore) {
+      if (!widget.loadingMore && widget.onLoadMoreCallback != null) {
         widget.onLoadMoreCallback();
       }
       return widget.loadMoreWidgetBuilder == null

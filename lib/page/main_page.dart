@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:score_app/config/color_config.dart';
-import 'package:score_app/page/mine_page.dart';
 import 'package:score_app/page/home_page.dart';
+import 'package:score_app/page/mine_page.dart';
+import 'package:score_app/page/search_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -74,28 +75,42 @@ class _MainPageState extends State<MainPage>
   }
 
   Widget buildSearchInput(BuildContext context) {
-    return new Container(
-      height: 40.0,
-      decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          borderRadius: BorderRadius.circular(4.0)),
-      child: new Row(
-        children: <Widget>[
-          new Padding(
-            padding: new EdgeInsets.only(right: 10.0, top: 3.0, left: 10.0),
-            child: new Icon(Icons.search,
-                size: 24.0, color: Theme.of(context).accentColor),
-          ),
-          new Expanded(
-            child: Text(
-              "搜索曲谱: 名称 词作者 曲作者",
-              textAlign: TextAlign.start,
-              style: TextStyle(fontSize: 14, color: ColorConfig.textBlack),
+    return new FlatButton(
+      onPressed: () => _go2SearchPage(context),
+      padding: EdgeInsets.all(0),
+      child: Container(
+        height: 40.0,
+        decoration: BoxDecoration(
+            color: Theme
+                .of(context)
+                .backgroundColor,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: new Row(
+          children: <Widget>[
+            new Padding(
+              padding: new EdgeInsets.only(right: 10.0, top: 3.0, left: 10.0),
+              child: new Icon(Icons.search,
+                  size: 24.0, color: Theme
+                      .of(context)
+                      .accentColor),
             ),
-          ),
-        ],
+            new Expanded(
+              child: Text(
+                "搜索曲谱: 名称 词作者 曲作者",
+                textAlign: TextAlign.start,
+                style: TextStyle(fontSize: 14, color: ColorConfig.textBlack),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  ///跳转到搜索页面
+  _go2SearchPage(BuildContext context) {
+    Navigator.of(context).push(new MaterialPageRoute(
+        builder: (BuildContext context) => new SearchPage()));
   }
 
   void _onTabChange() {

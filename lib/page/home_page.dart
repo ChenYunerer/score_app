@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   List<ScoreBaseInfoBean> listData = new List();
   bool loadingMore = false;
   bool noMoreData = false;
@@ -137,4 +137,7 @@ class HomePageState extends State<HomePage> {
     loadingMore = false;
     setState(() {});
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
