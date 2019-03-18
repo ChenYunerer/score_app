@@ -8,17 +8,22 @@ class PicturePage extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() {
-    return new PicturePageState();
+    return new PicturePageState(pictureUrlStr);
   }
 
 }
 
 class PicturePageState extends State<PicturePage>{
+  String pictureUrlStr;
+
+
+  PicturePageState(this.pictureUrlStr);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Image.network(widget.pictureUrlStr),
+      child: pictureUrlStr == null ? CircularProgressIndicator() : Image
+          .network(pictureUrlStr),
     );
   }
 
