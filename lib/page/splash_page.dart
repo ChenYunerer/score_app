@@ -29,7 +29,7 @@ class SplashPage extends StatelessWidget {
               margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
               child: Text(
                 devInfo,
-                style: TextStyle(fontSize: 14),
+                style: TextStyle(fontSize: 13, color: ColorConfig.textBlack),
               ),
             ),
           )
