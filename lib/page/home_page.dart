@@ -8,6 +8,7 @@ import 'package:score_app/page/show_picture_page.dart';
 import 'package:score_app/util/net_utils.dart';
 import 'package:score_app/widget/list_refresh.dart';
 
+///首页
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -40,6 +41,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
     );
   }
 
+  ///下拉刷新
   Future<Null> _handleRefresh() async {
     pageNum = 0;
     noMoreData = false;
@@ -47,6 +49,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
     return null;
   }
 
+  ///ListView item
   Widget itemWidgetBuild(BuildContext context, int index) {
     return FlatButton(
       padding: EdgeInsets.all(0),
@@ -108,6 +111,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
             new ShowPicturePage(scoreBaseInfoBean)));
   }
 
+  ///加载更多
   _loadMoreData() async {
     loadingMore = true;
     Map<String, int> params = new Map();
@@ -138,6 +142,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
     setState(() {});
   }
 
+  ///强制保活Page 避免页面重建
   @override
   bool get wantKeepAlive => true;
 }

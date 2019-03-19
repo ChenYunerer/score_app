@@ -4,6 +4,7 @@ import 'package:score_app/page/home_page.dart';
 import 'package:score_app/page/mine_page.dart';
 import 'package:score_app/page/search_page.dart';
 
+///主页面
 class MainPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -74,6 +75,7 @@ class _MainPageState extends State<MainPage>
     );
   }
 
+  ///顶部搜索框
   Widget buildSearchInput(BuildContext context) {
     return new FlatButton(
       onPressed: () => _go2SearchPage(context),
@@ -113,6 +115,7 @@ class _MainPageState extends State<MainPage>
         builder: (BuildContext context) => new SearchPage()));
   }
 
+  ///页面切换
   void _onTabChange() {
     if (this.mounted) {
       this.setState(() {});

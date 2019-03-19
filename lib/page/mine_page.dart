@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:score_app/config/color_config.dart';
 
+///我的页面
 class MinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -6,6 +6,7 @@ import 'package:score_app/bean/score_picture_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/util/net_utils.dart';
 
+///图片展示页面
 // ignore: must_be_immutable
 class ShowPicturePage extends StatefulWidget {
   ScoreBaseInfoBean scoreBaseInfoBean;
@@ -28,7 +29,10 @@ class ShowPicturePageState extends State<ShowPicturePage> {
 
   @override
   void initState() {
-    _loadScorePictures();
+    //图片数量大于1张时 才去加载其余图片
+    if (scoreBaseInfoBean.scorePictureCount > 1) {
+      _loadScorePictures();
+    }
     super.initState();
   }
 
@@ -65,6 +69,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
     );
   }
 
+  ///加载所有图片信息
   _loadScorePictures() async {
     Map<String, int> params = new Map();
     params["scoreId"] = scoreBaseInfoBean.scoreId;
