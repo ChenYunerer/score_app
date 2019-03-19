@@ -19,6 +19,17 @@
         android:name=".Application"
         android:label="搜谱"
         android:icon="@mipmap/ic_laucner_ion">
+
+        <!--开启动态补丁-->
+        <meta-data
+            android:name="DynamicPatching"
+            android:value="false" />
+
+        <!--动态补丁获取地址-->
+        <meta-data
+            android:name="PatchServerURL"
+            android:value="http://192.168.12.12:8080/FlutterPatch/" />
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
