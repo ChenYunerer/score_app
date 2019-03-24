@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/score_base_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
+import 'package:score_app/dialog/loading_dialog.dart';
 import 'package:score_app/page/show_picture_page.dart';
 import 'package:score_app/util/net_utils.dart';
 import 'package:score_app/widget/list_refresh.dart';
@@ -19,6 +20,7 @@ class SearchPageState extends State<SearchPage> {
   List<ScoreBaseInfoBean> listData = new List();
   List<Widget> chipWidgetList = new List();
   String searchParameter;
+  BuildContext context;
 
   @override
   void initState() {
@@ -76,6 +78,7 @@ class SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     return Scaffold(
       appBar: AppBar(title: Text("搜索")),
       body: Column(
@@ -140,6 +143,7 @@ class SearchPageState extends State<SearchPage> {
       ),
     );
   }
+
 
   ///list item
   Widget itemWidgetBuild(BuildContext context, int index) {
@@ -208,6 +212,7 @@ class SearchPageState extends State<SearchPage> {
     if (searchParameter == null || searchParameter.isEmpty) {
       return;
     }
+    LoadingDialog.showLoadingDialog(context);
     //保存到搜索历史
     _saveSearchHistory(searchParameter);
     //发起请求
@@ -232,6 +237,7 @@ class SearchPageState extends State<SearchPage> {
     }, onError: (e) {
       print(e);
     });
+    LoadingDialog.dismissLoadingDialog(context);
     setState(() {});
   }
 }
