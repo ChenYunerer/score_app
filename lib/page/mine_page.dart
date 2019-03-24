@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:score_app/config/color_config.dart';
+import 'package:score_app/dialog/login_dialog.dart';
 
 ///我的页面
 class MinePage extends StatelessWidget {
@@ -13,10 +14,13 @@ class MinePage extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: Row(
             children: <Widget>[
-              Image.asset(
-                "res/images/ic_laucner_ion.png",
-                width: 60,
-                height: 60,
+              InkWell(
+                onTap: () => LoginDialog.showLoadingDialog(context),
+                child: Image.asset(
+                  "res/images/ic_laucner_ion.png",
+                  width: 60,
+                  height: 60,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10),
