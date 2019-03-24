@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:score_app/config/color_config.dart';
 
-class RegistDialog extends Dialog {
+class RegisterDialog extends Dialog {
   static showLoadingDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (ctx) => new RegistDialog(),
+      builder: (ctx) => new RegisterDialog(),
     );
   }
 

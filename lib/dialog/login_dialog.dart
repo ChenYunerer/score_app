@@ -78,7 +78,7 @@ class LoginDialog extends Dialog {
                   FlatButton(
                     onPressed: () {
                       dismissLoadingDialog(context);
-                      RegistDialog.showLoadingDialog(context);
+                      RegisterDialog.showLoadingDialog(context);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8))),
