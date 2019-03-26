@@ -4,7 +4,7 @@ import 'package:score_app/bean/score_base_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/loading_dialog.dart';
 import 'package:score_app/page/show_picture_page.dart';
-import 'package:score_app/util/net_utils.dart';
+import 'package:score_app/util/net_util.dart';
 import 'package:score_app/widget/list_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -218,7 +218,7 @@ class SearchPageState extends State<SearchPage> {
     //发起请求
     Map<String, String> params = new Map();
     params["searchParameter"] = searchParameter;
-    await NetUtils.get("http://soupu.yuner.fun/app/score/scoreBase",
+    await NetUtils.get("/score/scoreBase",
             params: params)
         .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);

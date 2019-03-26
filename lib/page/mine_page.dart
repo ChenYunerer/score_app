@@ -3,7 +3,14 @@ import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
 
 ///我的页面
-class MinePage extends StatelessWidget {
+class MinePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return MinePageState();
+  }
+}
+
+class MinePageState extends State<MinePage> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,19 +31,71 @@ class MinePage extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10),
-                child: Text("搜谱--简简单单搜曲谱", style: TextStyle(fontSize: 16, color: ColorConfig.textBlack,fontWeight: FontWeight.w700),),
-              )
+                child: Text(
+                  "搜谱--简简单单搜曲谱",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: ColorConfig.textBlack,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
             ],
           ),
         ),
+        SizedBox(
+          height: 20,
+        ),
+        _buildDisplayItem(context, Icons.collections, "我的收藏"),
+        SizedBox(
+          height: 5,
+        ),
+        _buildDisplayItem(context, Icons.queue_play_next, "鸡腿计划"),
+        SizedBox(
+          height: 5,
+        ),
+        _buildDisplayItem(context, Icons.alternate_email, "关于我们"),
+        SizedBox(
+          height: 20,
+        ),
         Container(
+          margin: EdgeInsets.symmetric(horizontal: 20),
           width: double.infinity,
-          color: ColorConfig.white,
-          margin: EdgeInsets.only(top: 10),
-          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          child: Text("🍗 鸡腿计划", style: TextStyle(fontSize: 16, color: ColorConfig.textBlack),),
+          height: 45,
+          child: FlatButton(
+            onPressed: () {},
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8))),
+            color: ColorConfig.red,
+            child: Text(
+              "退出登录",
+              style: TextStyle(color: ColorConfig.white),
+            ),
+          ),
         )
       ],
+    );
+  }
+
+  Widget _buildDisplayItem(BuildContext context, IconData iconData,
+      String str) {
+    return Container(
+      width: double.infinity,
+      color: ColorConfig.white,
+      padding: EdgeInsets.fromLTRB(20, 12, 20, 12),
+      child: Row(
+        children: <Widget>[
+          Icon(iconData, size: 24.0, color: Theme
+              .of(context)
+              .accentColor),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            str,
+            style: TextStyle(fontSize: 16, color: ColorConfig.textBlack),
+          )
+        ],
+      ),
     );
   }
 }

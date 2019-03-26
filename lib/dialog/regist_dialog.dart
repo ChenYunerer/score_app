@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:score_app/config/color_config.dart';
 
+///注册/重置Dialog
 class RegisterDialog extends Dialog {
   static showLoadingDialog(BuildContext context) {
     showDialog(
@@ -76,6 +77,7 @@ class RegisterDialog extends Dialog {
     );
   }
 
+  ///通用输入框
   Widget _buildInputWidget(BuildContext context, String inputHint) {
     return Container(
       margin: EdgeInsets.all(10),
@@ -102,6 +104,7 @@ class RegisterDialog extends Dialog {
     );
   }
 
+  ///验证码输入框
   Widget _buildVerificationCodeInputWidget(
       BuildContext context, String inputHint) {
     return Container(

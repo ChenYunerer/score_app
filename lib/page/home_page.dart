@@ -5,7 +5,7 @@ import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/score_base_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/page/show_picture_page.dart';
-import 'package:score_app/util/net_utils.dart';
+import 'package:score_app/util/net_util.dart';
 import 'package:score_app/widget/list_refresh.dart';
 
 ///首页
@@ -116,7 +116,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
     loadingMore = true;
     Map<String, int> params = new Map();
     params["page"] = pageNum;
-    await NetUtils.get("http://soupu.yuner.fun/app/score/homeRecommend",
+    await NetUtils.get("/score/homeRecommend",
             params: params)
         .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);

@@ -4,7 +4,7 @@ import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/score_base_info_bean.dart';
 import 'package:score_app/bean/score_picture_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
-import 'package:score_app/util/net_utils.dart';
+import 'package:score_app/util/net_util.dart';
 
 ///图片展示页面
 // ignore: must_be_immutable
@@ -73,7 +73,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
   _loadScorePictures() async {
     Map<String, int> params = new Map();
     params["scoreId"] = scoreBaseInfoBean.scoreId;
-    await NetUtils.get("http://soupu.yuner.fun/app/score/scorePicture",
+    await NetUtils.get("/score/scorePicture",
         params: params)
         .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
