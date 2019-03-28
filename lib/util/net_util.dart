@@ -17,9 +17,9 @@ class NetUtils {
     return response.data;
   }
 
-  static Future post(String url, Map<String, dynamic> params) async {
+  static Future post(String url, String data) async {
     Options options = await getHttpOptions();
-    var response = await dio.post(url, data: params, options: options);
+    var response = await dio.post(url, data: data, options: options);
     return response.data;
   }
 
@@ -34,5 +34,15 @@ class NetUtils {
   static Future getToken() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.get(TOKEN_SP_KEY);
+  }
+
+  static Future saveToken(String token) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString(TOKEN_SP_KEY, token);
+  }
+
+  static clearToken() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString(TOKEN_SP_KEY, "");
   }
 }

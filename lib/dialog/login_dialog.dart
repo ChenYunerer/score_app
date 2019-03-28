@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/config/color_config.dart';
-import 'package:score_app/dialog/regist_dialog.dart';
+import 'package:score_app/dialog/register_dialog.dart';
+import 'package:score_app/util/net_util.dart';
 
 class LoginDialog extends Dialog {
   static showLoadingDialog(BuildContext context) {
@@ -12,6 +14,31 @@ class LoginDialog extends Dialog {
 
   static dismissLoadingDialog(BuildContext context) {
     Navigator.pop(context);
+  }
+
+  ///发起登录请求
+  _login(BuildContext context, String phoneNum, String password) async {
+    if (phoneNum == null || phoneNum.isEmpty) {
+      return;
+    }
+    if (password == null || password.isEmpty) {
+      return;
+    }
+    //发起请求
+    await NetUtils.post("/user/login", "")
+        .then((dataMap) {
+      BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
+      if (baseResponse.code == 1) {
+        //success
+
+      } else {
+        //something error
+        print(baseResponse.message);
+      }
+    }, onError: (e) {
+      print(e);
+    });
+    dismissLoadingDialog(context);
   }
 
   @override

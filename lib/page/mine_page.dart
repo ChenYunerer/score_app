@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
+import 'package:score_app/util/net_util.dart';
 
 ///我的页面
 class MinePage extends StatefulWidget {
@@ -11,6 +12,22 @@ class MinePage extends StatefulWidget {
 }
 
 class MinePageState extends State<MinePage> {
+  bool logined = false;
+
+  @override
+  void initState() {
+    super.initState();
+    NetUtils.getToken().then((token) {
+      String tokenStr = token as String;
+      if (tokenStr != null && !tokenStr.isEmpty) {
+        setState(() {
+          logined = true;
+        });
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,12 +74,17 @@ class MinePageState extends State<MinePage> {
         SizedBox(
           height: 20,
         ),
-        Container(
+        logined ? Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
           width: double.infinity,
           height: 45,
           child: FlatButton(
-            onPressed: () {},
+            onPressed: () {
+              NetUtils.clearToken();
+              setState(() {
+                logined = false;
+              });
+            },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8))),
             color: ColorConfig.red,
@@ -71,7 +93,7 @@ class MinePageState extends State<MinePage> {
               style: TextStyle(color: ColorConfig.white),
             ),
           ),
-        )
+        ) : SizedBox()
       ],
     );
   }
@@ -98,4 +120,6 @@ class MinePageState extends State<MinePage> {
       ),
     );
   }
+
+
 }
