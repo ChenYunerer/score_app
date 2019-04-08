@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/register_dialog.dart';
 import 'package:score_app/util/net_util.dart';
@@ -25,19 +24,7 @@ class LoginDialog extends Dialog {
       return;
     }
     //发起请求
-    await NetUtils.post("/user/login", "")
-        .then((dataMap) {
-      BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
-      if (baseResponse.code == 1) {
-        //success
-
-      } else {
-        //something error
-        print(baseResponse.message);
-      }
-    }, onError: (e) {
-      print(e);
-    });
+    NetUtils.post("/user/login", "");
     dismissLoadingDialog(context);
   }
 

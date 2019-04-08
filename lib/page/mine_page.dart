@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
-import 'package:score_app/util/net_util.dart';
+import 'package:score_app/util/token_util.dart';
 
 ///我的页面
 class MinePage extends StatefulWidget {
@@ -17,7 +17,7 @@ class MinePageState extends State<MinePage> {
   @override
   void initState() {
     super.initState();
-    NetUtils.getToken().then((token) {
+    TokenUtil.getToken().then((token) {
       String tokenStr = token as String;
       if (tokenStr != null && !tokenStr.isEmpty) {
         setState(() {
@@ -80,7 +80,7 @@ class MinePageState extends State<MinePage> {
           height: 45,
           child: FlatButton(
             onPressed: () {
-              NetUtils.clearToken();
+              TokenUtil.clearToken();
               setState(() {
                 logined = false;
               });

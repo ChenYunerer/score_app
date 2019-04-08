@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:score_app/config/color_config.dart';
+import 'package:score_app/widget/count_down_text.dart';
 
 ///注册/重置Dialog
 class RegisterDialog extends Dialog {
+
   static showLoadingDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -13,6 +15,7 @@ class RegisterDialog extends Dialog {
   static dismissLoadingDialog(BuildContext context) {
     Navigator.pop(context);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +110,7 @@ class RegisterDialog extends Dialog {
   ///验证码输入框
   Widget _buildVerificationCodeInputWidget(
       BuildContext context, String inputHint) {
+    var countDownText = CountDownText();
     return Container(
       margin: EdgeInsets.all(10),
       height: 40.0,
@@ -128,11 +132,15 @@ class RegisterDialog extends Dialog {
             ),
           ),
           FlatButton(
-            onPressed: () {},
+            onPressed: () {
+              if (!countDownText.isActive()) {
+                countDownText.startCountDown();
+              }
+            },
             //shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
             padding: EdgeInsets.all(0),
             color: ColorConfig.red,
-            child: Text("验证码", style: TextStyle(color: ColorConfig.white)),
+            child: countDownText,
           )
         ],
       ),
