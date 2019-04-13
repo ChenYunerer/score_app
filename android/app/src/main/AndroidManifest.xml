@@ -18,7 +18,7 @@
     <application
         android:name=".Application"
         android:label="搜谱"
-        android:icon="@mipmap/ic_laucner_ion">
+        android:icon="@mipmap/ic_launcher">
 
         <!--开启动态补丁-->
         <meta-data
