@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
 import 'package:score_app/util/token_util.dart';
+import 'package:score_app/util/user_util.dart';
 
 ///我的页面
 class MinePage extends StatefulWidget {
@@ -13,20 +15,29 @@ class MinePage extends StatefulWidget {
 
 class MinePageState extends State<MinePage> {
   bool logined = false;
+  UserInfo userInfo;
 
   @override
   void initState() {
     super.initState();
-    TokenUtil.getToken().then((token) {
-      String tokenStr = token as String;
-      if (tokenStr != null && !tokenStr.isEmpty) {
-        setState(() {
-          logined = true;
-        });
-      }
-    });
+    initUserStatus();
   }
 
+  void initUserStatus() {
+    UserUtil.getUserInfo().then((userInfo) {
+      this.userInfo = userInfo;
+      if (this.userInfo != null) {
+        logined = true;
+      } else {
+        logined = false;
+      }
+      setState(() {});
+    }, onError: (e) {
+      logined = false;
+      userInfo = null;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,33 +47,65 @@ class MinePageState extends State<MinePage> {
           color: ColorConfig.white,
           margin: EdgeInsets.only(top: 10),
           padding: EdgeInsets.all(10),
-          child: Row(
-            children: <Widget>[
-              InkWell(
-                onTap: () => LoginDialog.showLoadingDialog(context),
-                child: Image.asset(
+          child: InkWell(
+            onTap: () {
+              if (logined) {
+                return;
+              }
+              LoginDialog.showLoadingDialog(context, (userInfo) {
+                initUserStatus();
+              });
+            },
+            child: Row(
+              children: <Widget>[
+                Image.asset(
                   "res/images/ic_laucner_ion.png",
                   width: 60,
                   height: 60,
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
-                  "搜谱--简简单单搜曲谱",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConfig.textBlack,
-                      fontWeight: FontWeight.w700),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        "${userInfo == null ? "未登录" : userInfo.phoneNum}",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: ColorConfig.textBlack,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        "搜谱--简简单单搜曲谱",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: ColorConfig.textBlack,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    )
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         SizedBox(
           height: 20,
         ),
-        _buildDisplayItem(context, Icons.collections, "我的收藏"),
+        InkWell(
+          onTap: () {
+            if (logined) {
+              return;
+            }
+            LoginDialog.showLoadingDialog(context, (userInfo) {
+              initUserStatus();
+            });
+          },
+          child: _buildDisplayItem(context, Icons.collections, "我的收藏"),
+        ),
         SizedBox(
           height: 5,
         ),
@@ -74,16 +117,16 @@ class MinePageState extends State<MinePage> {
         SizedBox(
           height: 20,
         ),
-        logined ? Container(
+        logined
+            ? Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
           width: double.infinity,
           height: 45,
           child: FlatButton(
             onPressed: () {
+              UserUtil.clearUserInfo();
               TokenUtil.clearToken();
-              setState(() {
-                logined = false;
-              });
+              initUserStatus();
             },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8))),
@@ -93,7 +136,8 @@ class MinePageState extends State<MinePage> {
               style: TextStyle(color: ColorConfig.white),
             ),
           ),
-        ) : SizedBox()
+        )
+            : SizedBox()
       ],
     );
   }
@@ -120,6 +164,4 @@ class MinePageState extends State<MinePage> {
       ),
     );
   }
-
-
 }

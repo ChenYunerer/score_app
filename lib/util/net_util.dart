@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:score_app/util/token_util.dart';
 
-var BASE_URL = "http://soupu.yuner.fun:8080/app/";
+//192.168.0.107 soupu.yuner.fun
+var BASE_URL = "http://192.168.0.102:8080/app/";
 var TOKEN_HEADER_KEY = "token";
 var dio = new Dio(
     BaseOptions(baseUrl: BASE_URL, connectTimeout: 5000, receiveTimeout: 5000));
@@ -18,23 +19,13 @@ class NetUtils {
     return response.data;
   }
 
-  static void post(String url, data) async {
+  static Future post(String url, data) async {
     Options options = await getHttpOptions();
-    dio.post(url, data: data, options: options).then(
-        handleResponse, onError: handleError);
+    var response = await dio.post(
+        url, data: json.encode(data), options: options);
+    return response.data;
   }
 
-  static void handleResponse(Response response) {
-
-  }
-
-  static void handleError(DioError error) {
-    Fluttertoast.showToast(
-      msg: error.toString(),
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-    );
-  }
 
   ///通过HttpOptions封装Http Header
   static Future getHttpOptions() async {

@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:score_app/bean/base_response.dart';
+import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/register_dialog.dart';
 import 'package:score_app/util/net_util.dart';
+import 'package:score_app/util/token_util.dart';
+import 'package:score_app/util/user_util.dart';
+
+typedef OnLoginSuccessCallBack = void Function(UserInfo userInfo);
+
+final TextEditingController phoneNumController = new TextEditingController();
+final TextEditingController passwordController = new TextEditingController();
 
 class LoginDialog extends Dialog {
-  static showLoadingDialog(BuildContext context) {
+  OnLoginSuccessCallBack onLoginSuccessCallBack;
+
+  LoginDialog(this.onLoginSuccessCallBack);
+
+  static showLoadingDialog(BuildContext context, Function fun) {
     showDialog(
       context: context,
-      builder: (ctx) => new LoginDialog(),
+      builder: (ctx) => new LoginDialog(fun),
     );
   }
 
@@ -16,15 +30,31 @@ class LoginDialog extends Dialog {
   }
 
   ///发起登录请求
-  _login(BuildContext context, String phoneNum, String password) async {
+  _login(BuildContext context, String phoneNum, String password) {
     if (phoneNum == null || phoneNum.isEmpty) {
+      Fluttertoast.showToast(msg: "请输入用户名");
       return;
     }
     if (password == null || password.isEmpty) {
+      Fluttertoast.showToast(msg: "请输入登录密码");
       return;
     }
     //发起请求
-    NetUtils.post("/user/login", "");
+    NetUtils.post(
+        "/user/login", {"phoneNum": "$phoneNum", "password": "$password"})
+        .then((dataMap) {
+      BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
+      Fluttertoast.showToast(msg: baseResponse.message);
+      if (baseResponse.code != 1) {
+        return;
+      }
+      UserInfo userInfo = UserInfo.fromJson(baseResponse.data);
+      TokenUtil.saveToken(userInfo.token);
+      UserUtil.saveUserInfo(userInfo);
+      onLoginSuccessCallBack(userInfo);
+    }, onError: (e) {
+      print(e.toString());
+    });
     dismissLoadingDialog(context);
   }
 
@@ -73,13 +103,16 @@ class LoginDialog extends Dialog {
                   ],
                 ),
               ),
-              _buildInputWidget(context, "用户名"),
-              _buildInputWidget(context, "密码"),
+              _buildInputWidget(context, "用户名", phoneNumController),
+              _buildInputWidget(context, "密码", passwordController),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _login(context, phoneNumController.text,
+                          passwordController.text);
+                    },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8))),
                     color: ColorConfig.red,
@@ -109,7 +142,8 @@ class LoginDialog extends Dialog {
     );
   }
 
-  Widget _buildInputWidget(BuildContext context, String inputHint) {
+  Widget _buildInputWidget(BuildContext context, String inputHint,
+      TextEditingController controller) {
     return Container(
       margin: EdgeInsets.all(10),
       height: 40.0,
@@ -124,6 +158,7 @@ class LoginDialog extends Dialog {
           ),
           new Expanded(
             child: TextField(
+              controller: controller,
               decoration: InputDecoration(
                   hintText: "$inputHint", border: InputBorder.none),
               textAlign: TextAlign.start,
