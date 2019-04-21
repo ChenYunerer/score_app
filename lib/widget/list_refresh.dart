@@ -51,7 +51,7 @@ class _ListRefreshState extends State<ListRefresh> {
             ],
           )
         : ListView.builder(
-            itemCount: widget.itemData.length, itemBuilder: _itemBuilder);
+        itemCount: widget.itemData.length + 1, itemBuilder: _itemBuilder);
   }
 
   ///默认加载更多Widget
@@ -76,14 +76,14 @@ class _ListRefreshState extends State<ListRefresh> {
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    if (index == widget.itemData.length - 1 && !widget.noMoreData) {
+    if (index == widget.itemData.length && !widget.noMoreData) {
       if (!widget.loadingMore && widget.onLoadMoreCallback != null) {
         widget.onLoadMoreCallback();
       }
       return widget.loadMoreWidgetBuilder == null
           ? _loadMoreWidgetBuilder()
           : widget.loadMoreWidgetBuilder;
-    } else if (index == widget.itemData.length - 1 && widget.noMoreData) {
+    } else if (index == widget.itemData.length && widget.noMoreData) {
       return widget.noMoreDataWidgetBuilder == null
           ? _noMoreDataWidgetBuilder()
           : widget.noMoreDataWidgetBuilder;

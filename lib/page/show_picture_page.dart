@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/score_base_info_bean.dart';
@@ -27,12 +28,15 @@ class ShowPicturePageState extends State<ShowPicturePage> {
 
   ShowPicturePageState(this.scoreBaseInfoBean);
 
+  bool isCollected = false;
+
   @override
   void initState() {
     //图片数量大于1张时 才去加载其余图片
     if (scoreBaseInfoBean.scorePictureCount > 1) {
       _loadScorePictures();
     }
+    _isCollected();
     super.initState();
   }
 
@@ -62,6 +66,23 @@ class ShowPicturePageState extends State<ShowPicturePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(scoreBaseInfoBean.scoreName),
+        actions: <Widget>[
+          InkWell(
+            onTap: () {
+              if (isCollected) {
+                _removeCollection();
+              } else {
+                _addCollection();
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: isCollected
+                  ? Icon(Icons.remove_circle_outline)
+                  : Icon(Icons.add_circle_outline),
+            ),
+          )
+        ],
       ),
       body: PhotoViewGallery(
           backgroundDecoration: BoxDecoration(color: ColorConfig.black),
@@ -73,9 +94,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
   _loadScorePictures() async {
     Map<String, int> params = new Map();
     params["scoreId"] = scoreBaseInfoBean.scoreId;
-    await NetUtils.get("/score/scorePicture",
-        params: params)
-        .then((dataMap) {
+    await NetUtils.get("/score/scorePicture", params: params).then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
       if (baseResponse.code == 1) {
         //success
@@ -91,5 +110,67 @@ class ShowPicturePageState extends State<ShowPicturePage> {
       print(e);
     });
     setState(() {});
+  }
+
+  ///是否收藏
+  _isCollected() {
+    //发起请求
+    NetUtils.get(
+        "/collection/exist", params: {"scoreId": scoreBaseInfoBean.scoreId})
+        .then((dataMap) {
+      BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
+      if (baseResponse.code != 1) {
+        isCollected = false;
+      } else {
+        isCollected = true;
+      }
+      setState(() {
+
+      });
+    }, onError: (e) {
+      print(e.toString());
+    });
+  }
+
+  ///添加收藏
+  _addCollection() {
+    //发起请求
+    NetUtils.post(
+        "/collection", null, params: {"scoreId": scoreBaseInfoBean.scoreId})
+        .then((dataMap) {
+      BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
+      if (baseResponse.code != 1) {
+        isCollected = false;
+      } else {
+        isCollected = true;
+        Fluttertoast.showToast(msg: "添加到收藏");
+      }
+      setState(() {
+
+      });
+    }, onError: (e) {
+      print(e.toString());
+    });
+  }
+
+  ///移除收藏
+  _removeCollection() {
+    //发起请求
+    NetUtils.delete(
+        "/collection", params: {"scoreId": scoreBaseInfoBean.scoreId})
+        .then((dataMap) {
+      BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
+      if (baseResponse.code != 1) {
+        isCollected = true;
+      } else {
+        isCollected = false;
+        Fluttertoast.showToast(msg: "删除收藏");
+      }
+      setState(() {
+
+      });
+    }, onError: (e) {
+      print(e.toString());
+    });
   }
 }

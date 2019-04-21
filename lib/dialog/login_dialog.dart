@@ -5,8 +5,6 @@ import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/register_dialog.dart';
 import 'package:score_app/util/net_util.dart';
-import 'package:score_app/util/token_util.dart';
-import 'package:score_app/util/user_util.dart';
 
 typedef OnLoginSuccessCallBack = void Function(UserInfo userInfo);
 
@@ -44,18 +42,15 @@ class LoginDialog extends Dialog {
         "/user/login", {"phoneNum": "$phoneNum", "password": "$password"})
         .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
-      Fluttertoast.showToast(msg: baseResponse.message);
       if (baseResponse.code != 1) {
+        Fluttertoast.showToast(msg: baseResponse.message);
         return;
       }
       UserInfo userInfo = UserInfo.fromJson(baseResponse.data);
-      TokenUtil.saveToken(userInfo.token);
-      UserUtil.saveUserInfo(userInfo);
       onLoginSuccessCallBack(userInfo);
     }, onError: (e) {
       print(e.toString());
     });
-    dismissLoadingDialog(context);
   }
 
   @override

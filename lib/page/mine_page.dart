@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
+import 'package:score_app/page/collection_page.dart';
 import 'package:score_app/util/token_util.dart';
 import 'package:score_app/util/user_util.dart';
 
@@ -53,6 +54,9 @@ class MinePageState extends State<MinePage> {
                 return;
               }
               LoginDialog.showLoadingDialog(context, (userInfo) {
+                TokenUtil.saveToken(userInfo.token);
+                UserUtil.saveUserInfo(userInfo);
+                LoginDialog.dismissLoadingDialog(context);
                 initUserStatus();
               });
             },
@@ -98,11 +102,14 @@ class MinePageState extends State<MinePage> {
         InkWell(
           onTap: () {
             if (logined) {
-              return;
+              Navigator.of(context).push(new MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                  new CollectionPage()));
+            } else {
+              LoginDialog.showLoadingDialog(context, (userInfo) {
+                initUserStatus();
+              });
             }
-            LoginDialog.showLoadingDialog(context, (userInfo) {
-              initUserStatus();
-            });
           },
           child: _buildDisplayItem(context, Icons.collections, "我的收藏"),
         ),
