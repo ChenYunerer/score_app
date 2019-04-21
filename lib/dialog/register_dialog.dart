@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:score_app/bean/base_response.dart';
+import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
+import 'package:score_app/dialog/login_dialog.dart';
 import 'package:score_app/util/net_util.dart';
 import 'package:score_app/widget/count_down_text.dart';
 
@@ -16,10 +18,15 @@ TextEditingController();
 
 ///注册/重置Dialog
 class RegisterDialog extends Dialog {
-  static showLoadingDialog(BuildContext context) {
+  OnLoginSuccessCallBack onLoginSuccessCallBack;
+
+
+  RegisterDialog(this.onLoginSuccessCallBack);
+
+  static showLoadingDialog(BuildContext context, Function fun) {
     showDialog(
       context: context,
-      builder: (ctx) => new RegisterDialog(),
+      builder: (ctx) => new RegisterDialog(fun),
     );
   }
 
@@ -83,7 +90,7 @@ class RegisterDialog extends Dialog {
                   passwordAgainTextEditingController),
               FlatButton(
                 onPressed: () {
-                  _register(
+                  _register(context,
                       phoneNumTextEditingController.text,
                       passwordTextEditingController.text,
                       passwordAgainTextEditingController.text,
@@ -180,7 +187,8 @@ class RegisterDialog extends Dialog {
   }
 
   ///注册/重制
-  _register(String phoneNum, String password, String passwordAgain,
+  _register(BuildContext context, String phoneNum, String password,
+      String passwordAgain,
       String smsVerificationCode) async {
     if (phoneNum == null || phoneNum.isEmpty) {
       Fluttertoast.showToast(msg: "请输入用户名");
@@ -208,7 +216,13 @@ class RegisterDialog extends Dialog {
       "smsVerificationCode": smsVerificationCode
     }).then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
-      Fluttertoast.showToast(msg: baseResponse.message);
+      if (baseResponse.code != 1) {
+        Fluttertoast.showToast(msg: baseResponse.message);
+        return;
+      }
+      UserInfo userInfo = UserInfo.fromJson(baseResponse.data);
+      dismissLoadingDialog(context);
+      onLoginSuccessCallBack(userInfo);
     });
   }
 }

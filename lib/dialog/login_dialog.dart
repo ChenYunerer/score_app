@@ -47,6 +47,7 @@ class LoginDialog extends Dialog {
         return;
       }
       UserInfo userInfo = UserInfo.fromJson(baseResponse.data);
+      dismissLoadingDialog(context);
       onLoginSuccessCallBack(userInfo);
     }, onError: (e) {
       print(e.toString());
@@ -120,7 +121,8 @@ class LoginDialog extends Dialog {
                   FlatButton(
                     onPressed: () {
                       dismissLoadingDialog(context);
-                      RegisterDialog.showLoadingDialog(context);
+                      RegisterDialog.showLoadingDialog(
+                          context, onLoginSuccessCallBack);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8))),

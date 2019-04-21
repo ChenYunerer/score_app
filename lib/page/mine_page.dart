@@ -53,12 +53,7 @@ class MinePageState extends State<MinePage> {
               if (logined) {
                 return;
               }
-              LoginDialog.showLoadingDialog(context, (userInfo) {
-                TokenUtil.saveToken(userInfo.token);
-                UserUtil.saveUserInfo(userInfo);
-                LoginDialog.dismissLoadingDialog(context);
-                initUserStatus();
-              });
+              LoginDialog.showLoadingDialog(context, onLoginSuccessCallBack);
             },
             child: Row(
               children: <Widget>[
@@ -103,8 +98,7 @@ class MinePageState extends State<MinePage> {
           onTap: () {
             if (logined) {
               Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                  new CollectionPage()));
+                  builder: (BuildContext context) => new CollectionPage()));
             } else {
               LoginDialog.showLoadingDialog(context, (userInfo) {
                 initUserStatus();
@@ -170,5 +164,11 @@ class MinePageState extends State<MinePage> {
         ],
       ),
     );
+  }
+
+  onLoginSuccessCallBack(UserInfo userInfo) {
+    TokenUtil.saveToken(userInfo.token);
+    UserUtil.saveUserInfo(userInfo);
+    initUserStatus();
   }
 }
