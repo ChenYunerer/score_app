@@ -3,23 +3,27 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
-import 'package:score_app/dialog/register_dialog.dart';
 import 'package:score_app/util/net_util.dart';
 
 typedef OnLoginSuccessCallBack = void Function(UserInfo userInfo);
+typedef OnUserClickRegisterButtonCallBack = void Function();
 
 final TextEditingController phoneNumController = new TextEditingController();
 final TextEditingController passwordController = new TextEditingController();
 
 class LoginDialog extends Dialog {
   OnLoginSuccessCallBack onLoginSuccessCallBack;
+  OnUserClickRegisterButtonCallBack onUserClickRegisterButtonCallBack;
 
-  LoginDialog(this.onLoginSuccessCallBack);
+  LoginDialog(this.onLoginSuccessCallBack,
+      this.onUserClickRegisterButtonCallBack);
 
-  static showLoadingDialog(BuildContext context, Function fun) {
+  static showLoadingDialog(BuildContext context,
+      Function onLoginSuccessCallBack, Function onClickRegisterCallBack) {
     showDialog(
       context: context,
-      builder: (ctx) => new LoginDialog(fun),
+      builder: (ctx) =>
+      new LoginDialog(onLoginSuccessCallBack, onClickRegisterCallBack),
     );
   }
 
@@ -38,7 +42,7 @@ class LoginDialog extends Dialog {
       return;
     }
     //发起请求
-    NetUtils.post(
+    NetUtils.getInstance().post(
         "/user/login", {"phoneNum": "$phoneNum", "password": "$password"})
         .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
@@ -49,8 +53,6 @@ class LoginDialog extends Dialog {
       UserInfo userInfo = UserInfo.fromJson(baseResponse.data);
       dismissLoadingDialog(context);
       onLoginSuccessCallBack(userInfo);
-    }, onError: (e) {
-      print(e.toString());
     });
   }
 
@@ -120,9 +122,7 @@ class LoginDialog extends Dialog {
                   ),
                   FlatButton(
                     onPressed: () {
-                      dismissLoadingDialog(context);
-                      RegisterDialog.showLoadingDialog(
-                          context, onLoginSuccessCallBack);
+                      onUserClickRegisterButtonCallBack();
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8))),

@@ -4,8 +4,10 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/score_base_info_bean.dart';
 import 'package:score_app/bean/score_picture_info_bean.dart';
+import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/util/net_util.dart';
+import 'package:score_app/util/user_util.dart';
 
 ///图片展示页面
 // ignore: must_be_immutable
@@ -28,6 +30,8 @@ class ShowPicturePageState extends State<ShowPicturePage> {
 
   ShowPicturePageState(this.scoreBaseInfoBean);
 
+  bool logined = false;
+  UserInfo userInfo;
   bool isCollected = false;
 
   @override
@@ -36,8 +40,25 @@ class ShowPicturePageState extends State<ShowPicturePage> {
     if (scoreBaseInfoBean.scorePictureCount > 1) {
       _loadScorePictures();
     }
-    _isCollected();
+    initUserStatus();
     super.initState();
+  }
+
+  void initUserStatus() {
+    UserUtil.getUserInfo().then((userInfo) {
+      this.userInfo = userInfo;
+      if (this.userInfo != null) {
+        logined = true;
+        _isCollected();
+      } else {
+        logined = false;
+      }
+      setState(() {});
+    }, onError: (e) {
+      logined = false;
+      userInfo = null;
+      setState(() {});
+    });
   }
 
   ///初始化页面信息
@@ -94,7 +115,9 @@ class ShowPicturePageState extends State<ShowPicturePage> {
   _loadScorePictures() async {
     Map<String, int> params = new Map();
     params["scoreId"] = scoreBaseInfoBean.scoreId;
-    await NetUtils.get("/score/scorePicture", params: params).then((dataMap) {
+    await NetUtils.getInstance()
+        .get("/score/scorePicture", params: params)
+        .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
       if (baseResponse.code == 1) {
         //success
@@ -106,38 +129,38 @@ class ShowPicturePageState extends State<ShowPicturePage> {
         //something error
         print(baseResponse.message);
       }
-    }, onError: (e) {
-      print(e);
     });
     setState(() {});
   }
 
   ///是否收藏
   _isCollected() {
+    if (!logined) {
+      Fluttertoast.showToast(msg: "请先登录");
+      return;
+    }
     //发起请求
-    NetUtils.get(
-        "/collection/exist", params: {"scoreId": scoreBaseInfoBean.scoreId})
-        .then((dataMap) {
+    NetUtils.getInstance().get("/collection/exist",
+        params: {"scoreId": scoreBaseInfoBean.scoreId}).then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
       if (baseResponse.code != 1) {
         isCollected = false;
       } else {
         isCollected = true;
       }
-      setState(() {
-
-      });
-    }, onError: (e) {
-      print(e.toString());
+      setState(() {});
     });
   }
 
   ///添加收藏
   _addCollection() {
+    if (!logined) {
+      Fluttertoast.showToast(msg: "请先登录");
+      return;
+    }
     //发起请求
-    NetUtils.post(
-        "/collection", null, params: {"scoreId": scoreBaseInfoBean.scoreId})
-        .then((dataMap) {
+    NetUtils.getInstance().post("/collection", null,
+        params: {"scoreId": scoreBaseInfoBean.scoreId}).then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
       if (baseResponse.code != 1) {
         isCollected = false;
@@ -145,20 +168,19 @@ class ShowPicturePageState extends State<ShowPicturePage> {
         isCollected = true;
         Fluttertoast.showToast(msg: "添加到收藏");
       }
-      setState(() {
-
-      });
-    }, onError: (e) {
-      print(e.toString());
+      setState(() {});
     });
   }
 
   ///移除收藏
   _removeCollection() {
+    if (!logined) {
+      Fluttertoast.showToast(msg: "请先登录");
+      return;
+    }
     //发起请求
-    NetUtils.delete(
-        "/collection", params: {"scoreId": scoreBaseInfoBean.scoreId})
-        .then((dataMap) {
+    NetUtils.getInstance().delete("/collection",
+        params: {"scoreId": scoreBaseInfoBean.scoreId}).then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
       if (baseResponse.code != 1) {
         isCollected = true;
@@ -166,11 +188,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
         isCollected = false;
         Fluttertoast.showToast(msg: "删除收藏");
       }
-      setState(() {
-
-      });
-    }, onError: (e) {
-      print(e.toString());
+      setState(() {});
     });
   }
 }

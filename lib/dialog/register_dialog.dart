@@ -15,11 +15,11 @@ final TextEditingController passwordTextEditingController =
 TextEditingController();
 final TextEditingController passwordAgainTextEditingController =
 TextEditingController();
+var countDownText = CountDownText();
 
 ///注册/重置Dialog
 class RegisterDialog extends Dialog {
   OnLoginSuccessCallBack onLoginSuccessCallBack;
-
 
   RegisterDialog(this.onLoginSuccessCallBack);
 
@@ -85,12 +85,12 @@ class RegisterDialog extends Dialog {
                   context, "验证码", smsVerificationTextEditingController),
               _buildInputWidget(context, Icons.account_circle, "密码",
                   passwordTextEditingController),
-              _buildInputWidget(
-                  context, Icons.account_circle, "重复密码",
+              _buildInputWidget(context, Icons.account_circle, "重复密码",
                   passwordAgainTextEditingController),
               FlatButton(
                 onPressed: () {
-                  _register(context,
+                  _register(
+                      context,
                       phoneNumTextEditingController.text,
                       passwordTextEditingController.text,
                       passwordAgainTextEditingController.text,
@@ -110,8 +110,7 @@ class RegisterDialog extends Dialog {
 
   ///通用输入框
   Widget _buildInputWidget(BuildContext context, IconData iconData,
-      String inputHint,
-      TextEditingController controller) {
+      String inputHint, TextEditingController controller) {
     return Container(
       margin: EdgeInsets.all(10),
       height: 40.0,
@@ -126,6 +125,7 @@ class RegisterDialog extends Dialog {
           ),
           new Expanded(
             child: TextField(
+              controller: controller,
               decoration: InputDecoration(
                   hintText: "$inputHint", border: InputBorder.none),
               textAlign: TextAlign.start,
@@ -140,7 +140,6 @@ class RegisterDialog extends Dialog {
   ///验证码输入框
   Widget _buildVerificationCodeInputWidget(BuildContext context,
       String inputHint, TextEditingController controller) {
-    var countDownText = CountDownText();
     return Container(
       margin: EdgeInsets.all(10),
       height: 40.0,
@@ -155,6 +154,7 @@ class RegisterDialog extends Dialog {
           ),
           new Expanded(
             child: TextField(
+              controller: controller,
               decoration: InputDecoration(
                   hintText: "$inputHint", border: InputBorder.none),
               textAlign: TextAlign.start,
@@ -163,10 +163,7 @@ class RegisterDialog extends Dialog {
           ),
           FlatButton(
             onPressed: () {
-              if (!countDownText.isActive()) {
-                countDownText.startCountDown();
-                _getSMSVerificationCode();
-              }
+              _getSMSVerificationCode(phoneNumTextEditingController.text);
             },
             //shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
             padding: EdgeInsets.all(0),
@@ -179,17 +176,28 @@ class RegisterDialog extends Dialog {
   }
 
   ///获取短信验证码
-  _getSMSVerificationCode() async {
-    await NetUtils.get("/sms/verificationCode").then((dataMap) {
+  _getSMSVerificationCode(String phoneNum) async {
+    if (countDownText.isActive()) {
+      return;
+    }
+    if (phoneNum == null || phoneNum.isEmpty) {
+      Fluttertoast.showToast(msg: "请输入手机号");
+      return;
+    }
+    await NetUtils.getInstance().get(
+        "/sms/verificationCode", params: {"phoneNum": phoneNum})
+        .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
       Fluttertoast.showToast(msg: baseResponse.message);
+      if (baseResponse.isSuccess()) {
+        countDownText.startCountDown();
+      }
     });
   }
 
   ///注册/重制
   _register(BuildContext context, String phoneNum, String password,
-      String passwordAgain,
-      String smsVerificationCode) async {
+      String passwordAgain, String smsVerificationCode) async {
     if (phoneNum == null || phoneNum.isEmpty) {
       Fluttertoast.showToast(msg: "请输入用户名");
       return;
@@ -210,7 +218,7 @@ class RegisterDialog extends Dialog {
       Fluttertoast.showToast(msg: "两次输入密码不匹配");
       return;
     }
-    await NetUtils.post("/user/register", {
+    await NetUtils.getInstance().post("/user/register", {
       "phoneNum": phoneNum,
       "password": password,
       "smsVerificationCode": smsVerificationCode

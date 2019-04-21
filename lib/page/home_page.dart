@@ -116,7 +116,7 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
     loadingMore = true;
     Map<String, int> params = new Map();
     params["page"] = pageNum;
-    await NetUtils.get("/score/homeRecommend",
+    await NetUtils.getInstance().get("/score/homeRecommend",
             params: params)
         .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
@@ -135,8 +135,6 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
         //something error
         print(baseResponse.message);
       }
-    }, onError: (e) {
-      print(e);
     });
     loadingMore = false;
     setState(() {});

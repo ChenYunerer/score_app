@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
+import 'package:score_app/dialog/register_dialog.dart';
 import 'package:score_app/page/collection_page.dart';
 import 'package:score_app/util/token_util.dart';
 import 'package:score_app/util/user_util.dart';
@@ -53,7 +54,8 @@ class MinePageState extends State<MinePage> {
               if (logined) {
                 return;
               }
-              LoginDialog.showLoadingDialog(context, onLoginSuccessCallBack);
+              LoginDialog.showLoadingDialog(context, onLoginSuccessCallBack,
+                  onUserClickRegisterButtonCallBack);
             },
             child: Row(
               children: <Widget>[
@@ -100,9 +102,8 @@ class MinePageState extends State<MinePage> {
               Navigator.of(context).push(new MaterialPageRoute(
                   builder: (BuildContext context) => new CollectionPage()));
             } else {
-              LoginDialog.showLoadingDialog(context, (userInfo) {
-                initUserStatus();
-              });
+              LoginDialog.showLoadingDialog(context, onLoginSuccessCallBack,
+                  onUserClickRegisterButtonCallBack);
             }
           },
           child: _buildDisplayItem(context, Icons.collections, "我的收藏"),
@@ -170,5 +171,11 @@ class MinePageState extends State<MinePage> {
     TokenUtil.saveToken(userInfo.token);
     UserUtil.saveUserInfo(userInfo);
     initUserStatus();
+  }
+
+  onUserClickRegisterButtonCallBack() {
+    LoginDialog.dismissLoadingDialog(context);
+    RegisterDialog.showLoadingDialog(
+        context, onLoginSuccessCallBack);
   }
 }

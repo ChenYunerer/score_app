@@ -48,8 +48,6 @@ class SearchPageState extends State<SearchPage> {
               style: TextStyle(color: ColorConfig.white, fontSize: 13),
             )));
       }
-    }, onError: (err) {
-      print(err);
     }).whenComplete(() {
       setState(() {});
     });
@@ -218,7 +216,7 @@ class SearchPageState extends State<SearchPage> {
     //发起请求
     Map<String, String> params = new Map();
     params["searchParameter"] = searchParameter;
-    await NetUtils.get("/score/scoreBase",
+    await NetUtils.getInstance().get("/score/scoreBase",
             params: params)
         .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
@@ -234,8 +232,6 @@ class SearchPageState extends State<SearchPage> {
         //something error
         print(baseResponse.message);
       }
-    }, onError: (e) {
-      print(e);
     });
     LoadingDialog.dismissLoadingDialog(context);
     setState(() {});

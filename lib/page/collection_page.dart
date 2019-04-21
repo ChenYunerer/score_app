@@ -97,9 +97,9 @@ class CollectionPageState extends State<CollectionPage> {
 
   ///获取收藏信息
   _getAllCollection() async {
-    await NetUtils.get("/collection").then((dataMap) {
+    await NetUtils.getInstance().get("/collection").then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
-      if (baseResponse.code == 1) {
+      if (baseResponse.isSuccess()) {
         //success
         List scoreBaseInfoBeanList = baseResponse.data;
         List<ScoreBaseInfoBean> list = scoreBaseInfoBeanList.map((item) {
@@ -112,8 +112,6 @@ class CollectionPageState extends State<CollectionPage> {
         //something error
         print(baseResponse.message);
       }
-    }, onError: (e) {
-      print(e);
     });
   }
 }

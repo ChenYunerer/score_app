@@ -5,23 +5,55 @@ import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/util/token_util.dart';
-
-//192.168.0.103 soupu.yuner.fun
-var BASE_URL = "http://192.168.0.103:8080/app/";
-var TOKEN_HEADER_KEY = "token";
-var dio = new Dio(
-    BaseOptions(baseUrl: BASE_URL, connectTimeout: 5000, receiveTimeout: 5000));
-
+import 'package:score_app/util/user_util.dart';
 
 class NetUtils {
-  static Future get(String url, {Map<String, dynamic> params}) async {
+  //192.168.0.103 soupu.yuner.fun
+  static var BASE_URL = "http://soupu.yuner.fun:8080/app/";
+  static var TOKEN_HEADER_KEY = "token";
+  static var dio = _init();
+  static var netUtil = NetUtils._internal();
+
+  NetUtils._internal();
+
+  static NetUtils getInstance() {
+    return netUtil;
+  }
+
+  static Dio _init() {
+    var _dio = new Dio(new BaseOptions(
+        baseUrl: BASE_URL,
+        connectTimeout: 5000,
+        receiveTimeout: 5000
+    ));
+
+    _dio.interceptors.add(new LogInterceptor());
+    _dio.interceptors.add(new InterceptorsWrapper(onResponse: (response) {
+      BaseResponse baseResponse = BaseResponse.fromJson(response.data);
+      if (baseResponse.code != 1) {
+        Fluttertoast.showToast(msg: baseResponse.message);
+        if (baseResponse.code == 4) {
+          UserUtil.clearUserInfo();
+          TokenUtil.clearToken();
+          Fluttertoast.showToast(msg: "请重新登录");
+          return Future.error(baseResponse.message);
+        }
+      }
+    }, onError: (e) {
+      Fluttertoast.showToast(msg: e.message);
+    }));
+
+    return _dio;
+  }
+
+  Future get(String url, {Map<String, dynamic> params}) async {
     Options options = await getHttpOptions();
     var response =
         await dio.get(url, queryParameters: params, options: options);
     return response.data;
   }
 
-  static Future post(String url, data, {Map<String, dynamic> params}) async {
+  Future post(String url, data, {Map<String, dynamic> params}) async {
     Options options = await getHttpOptions();
     var response = await dio.post(
         url, queryParameters: params,
@@ -30,7 +62,7 @@ class NetUtils {
     return response.data;
   }
 
-  static Future delete(String url, {Map<String, dynamic> params}) async {
+  Future delete(String url, {Map<String, dynamic> params}) async {
     Options options = await getHttpOptions();
     var response =
     await dio.delete(url, queryParameters: params, options: options);
@@ -40,17 +72,6 @@ class NetUtils {
 
   ///通过HttpOptions封装Http Header
   static Future getHttpOptions() async {
-    dio.interceptors.add(new LogInterceptor());
-    dio.interceptors.add(new InterceptorsWrapper(onResponse: (response) {
-      BaseResponse baseResponse = BaseResponse.fromJson(response.data);
-      if (baseResponse.code != 1) {
-        Fluttertoast.showToast(msg: baseResponse.message);
-        if (baseResponse.code == 4) {
-          return Future.error(baseResponse.message);
-        }
-      }
-    }));
-
     String token = await TokenUtil.getToken();
     Map<String, dynamic> headers = new Map();
     headers[TOKEN_HEADER_KEY] = token;

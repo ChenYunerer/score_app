@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'base_response.g.dart';
 
 @JsonSerializable()
@@ -7,6 +8,10 @@ class BaseResponse {
   int code;
   String message;
   Object data;
+
+  bool isSuccess() {
+    return code == 1;
+  }
 
   BaseResponse(this.code, this.message, this.data);
 
