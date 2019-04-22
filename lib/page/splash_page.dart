@@ -26,7 +26,7 @@ class SplashPage extends StatelessWidget {
           Positioned(
             bottom: 0,
             child: Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 8),
               child: Text(
                 devInfo,
                 style: TextStyle(fontSize: 13, color: ColorConfig.textBlack),

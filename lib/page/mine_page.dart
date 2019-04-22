@@ -3,6 +3,8 @@ import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
 import 'package:score_app/dialog/register_dialog.dart';
+import 'package:score_app/page/about_us_page.dart';
+import 'package:score_app/page/chicken_leg_plan_page.dart';
 import 'package:score_app/page/collection_page.dart';
 import 'package:score_app/util/token_util.dart';
 import 'package:score_app/util/user_util.dart';
@@ -111,11 +113,23 @@ class MinePageState extends State<MinePage> {
         SizedBox(
           height: 5,
         ),
-        _buildDisplayItem(context, Icons.queue_play_next, "鸡腿计划"),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) => new ChickenLegPlanPage()));
+          },
+          child: _buildDisplayItem(context, Icons.queue_play_next, "鸡腿计划"),
+        ),
         SizedBox(
           height: 5,
         ),
-        _buildDisplayItem(context, Icons.alternate_email, "关于我们"),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) => new AboutUsPage()));
+          },
+          child: _buildDisplayItem(context, Icons.alternate_email, "关于我们"),
+        ),
         SizedBox(
           height: 20,
         ),
@@ -175,7 +189,6 @@ class MinePageState extends State<MinePage> {
 
   onUserClickRegisterButtonCallBack() {
     LoginDialog.dismissLoadingDialog(context);
-    RegisterDialog.showLoadingDialog(
-        context, onLoginSuccessCallBack);
+    RegisterDialog.showLoadingDialog(context, onLoginSuccessCallBack);
   }
 }
