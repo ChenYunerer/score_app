@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/score_base_info_bean.dart';
@@ -7,6 +6,7 @@ import 'package:score_app/bean/score_picture_info_bean.dart';
 import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/util/net_util.dart';
+import 'package:score_app/util/toast_util.dart';
 import 'package:score_app/util/user_util.dart';
 
 ///图片展示页面
@@ -136,7 +136,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
   ///是否收藏
   _isCollected() {
     if (!logined) {
-      Fluttertoast.showToast(msg: "请先登录");
+      ToastUtil.showToast("请先登录");
       return;
     }
     //发起请求
@@ -155,7 +155,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
   ///添加收藏
   _addCollection() {
     if (!logined) {
-      Fluttertoast.showToast(msg: "请先登录");
+      ToastUtil.showToast("请先登录");
       return;
     }
     //发起请求
@@ -166,7 +166,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
         isCollected = false;
       } else {
         isCollected = true;
-        Fluttertoast.showToast(msg: "添加到收藏");
+        ToastUtil.showToast("添加到收藏");
       }
       setState(() {});
     });
@@ -175,7 +175,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
   ///移除收藏
   _removeCollection() {
     if (!logined) {
-      Fluttertoast.showToast(msg: "请先登录");
+      ToastUtil.showToast("请先登录");
       return;
     }
     //发起请求
@@ -186,7 +186,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
         isCollected = true;
       } else {
         isCollected = false;
-        Fluttertoast.showToast(msg: "删除收藏");
+        ToastUtil.showToast("删除收藏");
       }
       setState(() {});
     });

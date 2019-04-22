@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/util/net_util.dart';
+import 'package:score_app/util/toast_util.dart';
 
 typedef OnLoginSuccessCallBack = void Function(UserInfo userInfo);
 typedef OnUserClickRegisterButtonCallBack = void Function();
@@ -34,11 +34,11 @@ class LoginDialog extends Dialog {
   ///发起登录请求
   _login(BuildContext context, String phoneNum, String password) {
     if (phoneNum == null || phoneNum.isEmpty) {
-      Fluttertoast.showToast(msg: "请输入用户名");
+      ToastUtil.showToast("请输入用户名");
       return;
     }
     if (password == null || password.isEmpty) {
-      Fluttertoast.showToast(msg: "请输入登录密码");
+      ToastUtil.showToast("请输入登录密码");
       return;
     }
     //发起请求
@@ -47,7 +47,7 @@ class LoginDialog extends Dialog {
         .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
       if (baseResponse.code != 1) {
-        Fluttertoast.showToast(msg: baseResponse.message);
+        ToastUtil.showToast(baseResponse.message);
         return;
       }
       UserInfo userInfo = UserInfo.fromJson(baseResponse.data);

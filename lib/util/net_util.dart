@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:score_app/bean/base_response.dart';
+import 'package:score_app/util/toast_util.dart';
 import 'package:score_app/util/token_util.dart';
 import 'package:score_app/util/user_util.dart';
 
@@ -31,16 +31,16 @@ class NetUtils {
     _dio.interceptors.add(new InterceptorsWrapper(onResponse: (response) {
       BaseResponse baseResponse = BaseResponse.fromJson(response.data);
       if (baseResponse.code != 1) {
-        Fluttertoast.showToast(msg: baseResponse.message);
+        ToastUtil.showToast(baseResponse.message);
         if (baseResponse.code == 4) {
           UserUtil.clearUserInfo();
           TokenUtil.clearToken();
-          Fluttertoast.showToast(msg: "请重新登录");
+          ToastUtil.showToast("请重新登录");
           return Future.error(baseResponse.message);
         }
       }
     }, onError: (e) {
-      Fluttertoast.showToast(msg: e.message);
+      ToastUtil.showToast(e.message);
     }));
 
     return _dio;

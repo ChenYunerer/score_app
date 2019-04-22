@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
 import 'package:score_app/util/net_util.dart';
+import 'package:score_app/util/toast_util.dart';
 import 'package:score_app/widget/count_down_text.dart';
 
 final TextEditingController phoneNumTextEditingController =
@@ -181,14 +181,14 @@ class RegisterDialog extends Dialog {
       return;
     }
     if (phoneNum == null || phoneNum.isEmpty) {
-      Fluttertoast.showToast(msg: "请输入手机号");
+      ToastUtil.showToast("请输入手机号");
       return;
     }
     await NetUtils.getInstance().get(
         "/sms/verificationCode", params: {"phoneNum": phoneNum})
         .then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
-      Fluttertoast.showToast(msg: baseResponse.message);
+      ToastUtil.showToast(baseResponse.message);
       if (baseResponse.isSuccess()) {
         countDownText.startCountDown();
       }
@@ -199,23 +199,23 @@ class RegisterDialog extends Dialog {
   _register(BuildContext context, String phoneNum, String password,
       String passwordAgain, String smsVerificationCode) async {
     if (phoneNum == null || phoneNum.isEmpty) {
-      Fluttertoast.showToast(msg: "请输入用户名");
+      ToastUtil.showToast("请输入用户名");
       return;
     }
     if (smsVerificationCode == null || smsVerificationCode.isEmpty) {
-      Fluttertoast.showToast(msg: "请输入短信验证码");
+      ToastUtil.showToast("请输入短信验证码");
       return;
     }
     if (password == null || password.isEmpty) {
-      Fluttertoast.showToast(msg: "请输入密码");
+      ToastUtil.showToast("请输入密码");
       return;
     }
     if (passwordAgain == null || passwordAgain.isEmpty) {
-      Fluttertoast.showToast(msg: "请重复密码");
+      ToastUtil.showToast("请重复密码");
       return;
     }
     if (password != passwordAgain) {
-      Fluttertoast.showToast(msg: "两次输入密码不匹配");
+      ToastUtil.showToast("两次输入密码不匹配");
       return;
     }
     await NetUtils.getInstance().post("/user/register", {
@@ -225,7 +225,7 @@ class RegisterDialog extends Dialog {
     }).then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
       if (baseResponse.code != 1) {
-        Fluttertoast.showToast(msg: baseResponse.message);
+        ToastUtil.showToast(baseResponse.message);
         return;
       }
       UserInfo userInfo = UserInfo.fromJson(baseResponse.data);
