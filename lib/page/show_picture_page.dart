@@ -99,8 +99,8 @@ class ShowPicturePageState extends State<ShowPicturePage> {
             child: Padding(
               padding: EdgeInsets.only(right: 20),
               child: isCollected
-                  ? Icon(Icons.remove_circle_outline)
-                  : Icon(Icons.add_circle_outline),
+                  ? Icon(Icons.remove_circle_outline, size: 30,)
+                  : Icon(Icons.add_circle_outline, size: 30,),
             ),
           )
         ],
@@ -146,7 +146,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
       if (baseResponse.code != 1) {
         isCollected = false;
       } else {
-        isCollected = true;
+        isCollected = baseResponse.data as bool;
       }
       setState(() {});
     });
