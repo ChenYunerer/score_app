@@ -110,7 +110,8 @@ class RegisterDialog extends Dialog {
 
   ///通用输入框
   Widget _buildInputWidget(BuildContext context, IconData iconData,
-      String inputHint, TextEditingController controller) {
+      String inputHint, TextEditingController controller,
+      {bool password = false}) {
     return Container(
       margin: EdgeInsets.all(10),
       height: 40.0,
@@ -125,11 +126,13 @@ class RegisterDialog extends Dialog {
           ),
           new Expanded(
             child: TextField(
+              keyboardType: TextInputType.number,
               controller: controller,
               decoration: InputDecoration(
                   hintText: "$inputHint", border: InputBorder.none),
               textAlign: TextAlign.start,
               style: TextStyle(fontSize: 14, color: ColorConfig.textBlack),
+              obscureText: password,
             ),
           ),
         ],
@@ -154,6 +157,7 @@ class RegisterDialog extends Dialog {
           ),
           new Expanded(
             child: TextField(
+              keyboardType: TextInputType.number,
               controller: controller,
               decoration: InputDecoration(
                   hintText: "$inputHint", border: InputBorder.none),

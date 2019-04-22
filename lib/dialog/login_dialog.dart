@@ -102,7 +102,8 @@ class LoginDialog extends Dialog {
                 ),
               ),
               _buildInputWidget(context, "用户名", phoneNumController),
-              _buildInputWidget(context, "密码", passwordController),
+              _buildInputWidget(
+                  context, "密码", passwordController, password: true),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -140,7 +141,7 @@ class LoginDialog extends Dialog {
   }
 
   Widget _buildInputWidget(BuildContext context, String inputHint,
-      TextEditingController controller) {
+      TextEditingController controller, {bool password = false}) {
     return Container(
       margin: EdgeInsets.all(10),
       height: 40.0,
@@ -155,11 +156,13 @@ class LoginDialog extends Dialog {
           ),
           new Expanded(
             child: TextField(
+              keyboardType: TextInputType.number,
               controller: controller,
               decoration: InputDecoration(
                   hintText: "$inputHint", border: InputBorder.none),
               textAlign: TextAlign.start,
               style: TextStyle(fontSize: 14, color: ColorConfig.textBlack),
+              obscureText: password,
             ),
           ),
         ],

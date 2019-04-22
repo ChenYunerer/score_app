@@ -3,6 +3,7 @@ import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
 import 'package:score_app/dialog/register_dialog.dart';
+import 'package:score_app/dialog/tip_dialog.dart';
 import 'package:score_app/page/about_us_page.dart';
 import 'package:score_app/page/chicken_leg_plan_page.dart';
 import 'package:score_app/page/collection_page.dart';
@@ -140,9 +141,13 @@ class MinePageState extends State<MinePage> {
           height: 45,
           child: FlatButton(
             onPressed: () {
-              UserUtil.clearUserInfo();
-              TokenUtil.clearToken();
-              initUserStatus();
+              TipDialog.showTipDialog(
+                  context, "退出登录", onPositiveButtonClickCallBack: (context) {
+                TipDialog.dismissTipDialog(context);
+                UserUtil.clearUserInfo();
+                TokenUtil.clearToken();
+                initUserStatus();
+              });
             },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8))),
