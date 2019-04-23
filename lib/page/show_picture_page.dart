@@ -125,12 +125,9 @@ class ShowPicturePageState extends State<ShowPicturePage> {
         scorePictureInfoBeanList = list.map((item) {
           return item = ScorePictureInfoBean.fromJson(item);
         }).toList();
-      } else {
-        //something error
-        print(baseResponse.message);
+        setState(() {});
       }
     });
-    setState(() {});
   }
 
   ///是否收藏
