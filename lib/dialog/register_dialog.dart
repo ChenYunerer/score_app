@@ -84,9 +84,9 @@ class RegisterDialog extends Dialog {
               _buildVerificationCodeInputWidget(
                   context, "验证码", smsVerificationTextEditingController),
               _buildInputWidget(context, Icons.account_circle, "密码",
-                  passwordTextEditingController),
+                  passwordTextEditingController, password: true),
               _buildInputWidget(context, Icons.account_circle, "重复密码",
-                  passwordAgainTextEditingController),
+                  passwordAgainTextEditingController, password: true),
               FlatButton(
                 onPressed: () {
                   _register(
