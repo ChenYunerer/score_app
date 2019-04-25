@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/score_base_info_bean.dart';
@@ -67,10 +68,14 @@ class ShowPicturePageState extends State<ShowPicturePage> {
     for (int i = 0; i < scoreBaseInfoBean.scorePictureCount; i++) {
       if (i == 0) {
         photoViewGalleryPageOptionsList.add(PhotoViewGalleryPageOptions(
+            minScale: PhotoViewComputedScale.contained * 0.8,
+            maxScale: PhotoViewComputedScale.covered * 1.5,
             imageProvider: NetworkImage(scoreBaseInfoBean.scoreCoverPicture),
             heroTag: i.toString()));
       } else {
         photoViewGalleryPageOptionsList.add(PhotoViewGalleryPageOptions(
+            minScale: PhotoViewComputedScale.contained * 0.8,
+            maxScale: PhotoViewComputedScale.covered * 1.5,
             imageProvider: NetworkImage(scorePictureInfoBeanList == null
                 ? ""
                 : scorePictureInfoBeanList
@@ -106,6 +111,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
         ],
       ),
       body: PhotoViewGallery(
+          scrollPhysics: const BouncingScrollPhysics(),
           backgroundDecoration: BoxDecoration(color: ColorConfig.black),
           pageOptions: photoViewGalleryPageOptionsList),
     );
