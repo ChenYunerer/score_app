@@ -42,9 +42,8 @@ class LoginDialog extends Dialog {
       return;
     }
     //发起请求
-    NetUtils.getInstance().post(
-        "/user/login", {"phoneNum": "$phoneNum", "password": "$password"})
-        .then((dataMap) {
+    NetUtils.getInstance().post("/user/login",
+        {"phoneNum": "$phoneNum", "password": "$password"}).then((dataMap) {
       BaseResponse baseResponse = BaseResponse.fromJson(dataMap);
       if (baseResponse.code != 1) {
         ToastUtil.showToast(baseResponse.message);
@@ -102,11 +101,24 @@ class LoginDialog extends Dialog {
                 ),
               ),
               _buildInputWidget(context, "用户名", phoneNumController),
-              _buildInputWidget(
-                  context, "密码", passwordController, password: true),
+              _buildInputWidget(context, "密码", passwordController,
+                  password: true),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      onUserClickRegisterButtonCallBack();
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    color: ColorConfig.red,
+                    child:
+                    Text("注册", style: TextStyle(color: ColorConfig.white)),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
                   FlatButton(
                     onPressed: () {
                       _login(context, phoneNumController.text,
@@ -116,20 +128,7 @@ class LoginDialog extends Dialog {
                         borderRadius: BorderRadius.all(Radius.circular(8))),
                     color: ColorConfig.red,
                     child:
-                        Text("登录", style: TextStyle(color: ColorConfig.white)),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                      onUserClickRegisterButtonCallBack();
-                    },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    color: ColorConfig.red,
-                    child:
-                        Text("注册", style: TextStyle(color: ColorConfig.white)),
+                    Text("登录", style: TextStyle(color: ColorConfig.white)),
                   )
                 ],
               )
@@ -141,7 +140,8 @@ class LoginDialog extends Dialog {
   }
 
   Widget _buildInputWidget(BuildContext context, String inputHint,
-      TextEditingController controller, {bool password = false}) {
+      TextEditingController controller,
+      {bool password = false}) {
     return Container(
       margin: EdgeInsets.all(10),
       height: 40.0,
