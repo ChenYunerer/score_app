@@ -52,7 +52,7 @@ class AboutUsPage extends StatelessWidget {
               width: double.infinity,
               padding: EdgeInsets.all(15),
               child: Text(
-                  "搜谱项目的在于提供良好的曲谱搜索服务，适配Android手机，以及Android平板，对于iOS设备的支持，会在系统趋于稳定的时候提上日程。搜谱项目实际开发、维护、运营团队只有一个人，难免存在不足，望谅解。",
+                  "搜谱项目的在于提供良好的曲谱搜索服务，适配Android、iOS设备。搜谱项目实际开发、维护、运营团队只有一个人，难免存在不足，望谅解。",
                   style:
                       TextStyle(color: ColorConfig.textBlack, fontSize: 15.0)),
             ),
