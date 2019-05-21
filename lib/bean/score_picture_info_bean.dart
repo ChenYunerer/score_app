@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'score_picture_info_bean.g.dart';
 
 @JsonSerializable()
