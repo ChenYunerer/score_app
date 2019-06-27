@@ -9,7 +9,9 @@ import 'package:score_app/util/user_util.dart';
 
 class NetUtils {
   //192.168.0.103 soupu.yuner.fun
-  static var BASE_URL = "http://soupu.yuner.fun:8080/app/";
+  static var DOMAIN = "http://soupu.yuner.fun";
+  static var BASE_URL = DOMAIN + ":8080/app/";
+  static var PRIVACY_URL = DOMAIN + ":8080/privacy.html";
   static var TOKEN_HEADER_KEY = "token";
   static var dio = _init();
   static var netUtil = NetUtils._internal();

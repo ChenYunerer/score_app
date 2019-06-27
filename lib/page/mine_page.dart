@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
+import 'package:score_app/dialog/privacy_dialog.dart';
 import 'package:score_app/dialog/register_dialog.dart';
 import 'package:score_app/dialog/tip_dialog.dart';
 import 'package:score_app/page/about_us_page.dart';
@@ -57,8 +60,10 @@ class MinePageState extends State<MinePage> {
               if (logined) {
                 return;
               }
-              LoginDialog.showLoadingDialog(context, onLoginSuccessCallBack,
-                  onUserClickRegisterButtonCallBack);
+              showPrivacyDialog(context, () {
+                LoginDialog.showLoadingDialog(context, onLoginSuccessCallBack,
+                    onUserClickRegisterButtonCallBack);
+              });
             },
             child: Row(
               children: <Widget>[
@@ -114,13 +119,13 @@ class MinePageState extends State<MinePage> {
         SizedBox(
           height: 5,
         ),
-        InkWell(
+        Platform.isAndroid ? InkWell(
           onTap: () {
             Navigator.of(context).push(new MaterialPageRoute(
                 builder: (BuildContext context) => new ChickenLegPlanPage()));
           },
           child: _buildDisplayItem(context, Icons.queue_play_next, "鸡腿计划"),
-        ),
+        ) : SizedBox(),
         SizedBox(
           height: 5,
         ),
