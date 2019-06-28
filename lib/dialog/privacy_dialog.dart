@@ -12,7 +12,7 @@ void showPrivacyDialog(BuildContext context, Function option) {
           child: Column(
             children: <Widget>[
               Text(
-                "欢迎光临灵魂酒馆\n",
+                "欢迎使用搜谱APP\n",
                 style: TextStyle(fontSize: 24),
               ),
               Text(

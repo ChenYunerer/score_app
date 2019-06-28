@@ -60,10 +60,7 @@ class MinePageState extends State<MinePage> {
               if (logined) {
                 return;
               }
-              showPrivacyDialog(context, () {
-                LoginDialog.showLoadingDialog(context, onLoginSuccessCallBack,
-                    onUserClickRegisterButtonCallBack);
-              });
+              tryToLogin(context);
             },
             child: Row(
               children: <Widget>[
@@ -110,8 +107,7 @@ class MinePageState extends State<MinePage> {
               Navigator.of(context).push(new MaterialPageRoute(
                   builder: (BuildContext context) => new CollectionPage()));
             } else {
-              LoginDialog.showLoadingDialog(context, onLoginSuccessCallBack,
-                  onUserClickRegisterButtonCallBack);
+              tryToLogin(context);
             }
           },
           child: _buildDisplayItem(context, Icons.collections, "我的收藏"),
@@ -189,6 +185,13 @@ class MinePageState extends State<MinePage> {
         ],
       ),
     );
+  }
+
+  tryToLogin(BuildContext context) {
+    showPrivacyDialog(context, () {
+      LoginDialog.showLoadingDialog(context, onLoginSuccessCallBack,
+          onUserClickRegisterButtonCallBack);
+    });
   }
 
   onLoginSuccessCallBack(UserInfo userInfo) {
