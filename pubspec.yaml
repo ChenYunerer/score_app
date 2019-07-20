@@ -1,7 +1,7 @@
 name: score_app
 description: A new Flutter application.
 
-version: 1.0.1+2
+version: 1.0.3+4
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -10,12 +10,12 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  dio: 2.0.20
+  dio: 2.1.13
   json_annotation: ^2.0.0
-  photo_view: ^0.3.1
-  shared_preferences: ^0.5.1+2
-  fluttertoast: ^3.0.3
-  url_launcher: ^5.0.2
+  photo_view: ^0.4.2
+  shared_preferences: ^0.5.3+4
+  fluttertoast: ^3.1.0
+  url_launcher: ^5.1.0
 
 dev_dependencies:
   flutter_test:
