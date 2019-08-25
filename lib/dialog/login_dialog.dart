@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
+import 'package:score_app/util/md5_util.dart';
 import 'package:score_app/util/net_util.dart';
 import 'package:score_app/util/toast_util.dart';
 
@@ -41,6 +42,8 @@ class LoginDialog extends Dialog {
       ToastUtil.showToast("请输入登录密码");
       return;
     }
+    //密码MD5加密
+    password = MD5Util.generateMd5(password);
     //发起请求
     NetUtils.getInstance().post("/user/login",
         {"phoneNum": "$phoneNum", "password": "$password"}).then((dataMap) {

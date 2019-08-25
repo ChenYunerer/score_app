@@ -3,6 +3,7 @@ import 'package:score_app/bean/base_response.dart';
 import 'package:score_app/bean/user_info_bean.dart';
 import 'package:score_app/config/color_config.dart';
 import 'package:score_app/dialog/login_dialog.dart';
+import 'package:score_app/util/md5_util.dart';
 import 'package:score_app/util/net_util.dart';
 import 'package:score_app/util/toast_util.dart';
 import 'package:score_app/widget/count_down_text.dart';
@@ -222,6 +223,8 @@ class RegisterDialog extends Dialog {
       ToastUtil.showToast("两次输入密码不匹配");
       return;
     }
+    //密码MD5加密
+    password = MD5Util.generateMd5(password);
     await NetUtils.getInstance().post("/user/register", {
       "phoneNum": phoneNum,
       "password": password,
