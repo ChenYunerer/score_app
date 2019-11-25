@@ -11,14 +11,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: '搜谱',
       theme: ThemeData(
-        primaryColor: ColorConfig.red,
+        primaryColor: ColorConfig.main_theme,
         backgroundColor: ColorConfig.background,
         accentColor: ColorConfig.gray,
         textTheme: TextTheme(
           body1: TextStyle(color: ColorConfig.textDefault, fontSize: 16.0),
         ),
         iconTheme: IconThemeData(
-          color: ColorConfig.red,
+          color: ColorConfig.main_theme,
           size: 35.0,
         ),
       ),

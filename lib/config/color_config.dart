@@ -9,5 +9,5 @@ class ColorConfig {
   static const Color gray = Color(0xFF888888);
   static const Color textDefault = Color(0xFF888888);
   static const Color textBlack = Color(0xFF313131);
-  static const Color mainTheme = china_green;
+  static const Color main_theme = china_green;
 }

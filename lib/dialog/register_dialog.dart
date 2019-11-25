@@ -99,7 +99,7 @@ class RegisterDialog extends Dialog {
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8))),
-                color: ColorConfig.red,
+                color: ColorConfig.main_theme,
                 child: Text("确认", style: TextStyle(color: ColorConfig.white)),
               )
             ],
@@ -172,7 +172,7 @@ class RegisterDialog extends Dialog {
             },
             //shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
             padding: EdgeInsets.all(0),
-            color: ColorConfig.red,
+            color: ColorConfig.main_theme,
             child: countDownText,
           )
         ],

@@ -70,8 +70,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
         photoViewGalleryPageOptionsList.add(PhotoViewGalleryPageOptions(
             minScale: PhotoViewComputedScale.contained * 0.8,
             maxScale: PhotoViewComputedScale.covered * 1.5,
-            imageProvider: NetworkImage(scoreBaseInfoBean.scoreCoverPicture),
-            heroTag: i.toString()));
+            imageProvider: NetworkImage(scoreBaseInfoBean.scoreCoverPicture)));
       } else {
         photoViewGalleryPageOptionsList.add(PhotoViewGalleryPageOptions(
             minScale: PhotoViewComputedScale.contained * 0.8,
@@ -80,8 +79,7 @@ class ShowPicturePageState extends State<ShowPicturePage> {
                 ? ""
                 : scorePictureInfoBeanList
                 .elementAt(i)
-                .scorePictureHref),
-            heroTag: i.toString()));
+                .scorePictureHref)));
       }
     }
   }

@@ -115,7 +115,7 @@ class LoginDialog extends Dialog {
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8))),
-                    color: ColorConfig.red,
+                    color: ColorConfig.main_theme,
                     child:
                     Text("注册", style: TextStyle(color: ColorConfig.white)),
                   ),
@@ -129,7 +129,7 @@ class LoginDialog extends Dialog {
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8))),
-                    color: ColorConfig.red,
+                    color: ColorConfig.main_theme,
                     child:
                     Text("登录", style: TextStyle(color: ColorConfig.white)),
                   )

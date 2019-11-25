@@ -38,7 +38,7 @@ class SearchPageState extends State<SearchPage> {
       }
       for (int i = 0; i < searchParameterHistoryList.length; i++) {
         chipWidgetList.add(ChoiceChip(
-            backgroundColor: ColorConfig.red,
+            backgroundColor: ColorConfig.main_theme,
             selected: false,
             onSelected: (bool value) {
               _searchScore(searchParameterHistoryList.elementAt(i));
@@ -134,7 +134,7 @@ class SearchPageState extends State<SearchPage> {
             onPressed: () => _searchScore(searchParameter),
             //shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
             padding: EdgeInsets.all(0),
-            color: ColorConfig.red,
+            color: ColorConfig.main_theme,
             child: Text("搜索", style: TextStyle(color: ColorConfig.white)),
           )
         ],

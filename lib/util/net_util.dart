@@ -74,7 +74,8 @@ class NetUtils {
 
   ///通过HttpOptions封装Http Header
   static Future getHttpOptions() async {
-    String token = await TokenUtil.getToken();
+    //String token = await TokenUtil.getToken();
+    String token = "unknow";
     Map<String, dynamic> headers = new Map();
     headers[TOKEN_HEADER_KEY] = token;
     Options options = Options(headers: headers);

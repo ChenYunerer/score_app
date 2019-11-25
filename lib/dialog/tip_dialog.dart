@@ -107,7 +107,7 @@ class TipDialog extends Dialog {
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8))),
-                    color: ColorConfig.red,
+                    color: ColorConfig.main_theme,
                     child: Text(negativeButtonStr,
                         style: TextStyle(color: ColorConfig.white)),
                   ),
@@ -122,7 +122,7 @@ class TipDialog extends Dialog {
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8))),
-                    color: ColorConfig.red,
+                    color: ColorConfig.main_theme,
                     child: Text(positiveButtonStr,
                         style: TextStyle(color: ColorConfig.white)),
                   )

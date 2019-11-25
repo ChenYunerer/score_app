@@ -152,7 +152,7 @@ class MinePageState extends State<MinePage> {
             },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8))),
-            color: ColorConfig.red,
+            color: ColorConfig.main_theme,
             child: Text(
               "退出登录",
               style: TextStyle(color: ColorConfig.white),
